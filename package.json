@@ -1,0 +1,24 @@
+{
+  "name": "turning_flowers",
+  "version": "1.0.0",
+  "description": "p5.js animation",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run lite",
+    "lite" : "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesagoh/turning_flowers.git"
+  },
+  "author": "Melissa Goh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mesagoh/turning_flowers/issues"
+  },
+  "homepage": "https://github.com/mesagoh/turning_flowers#readme",
+  "dependencies": {
+    "lite-server": "^2.5.4"
+  }
+}

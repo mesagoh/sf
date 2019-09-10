@@ -1,11 +1,11 @@
 let flowers = [];
-let numFlowers = 5;
+let numFlowers = 30;
 let theta = 0;
 let lightYellowOvary;
 let pinkPetal;
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(windowWidth, windowHeight);
   initFlowers();
   lightYellowOvary = color(255,222,173);
   pinkPetal = color(255,240,245);
@@ -61,7 +61,7 @@ function printSignature() {
 
 class Flower {
   constructor() {
-    this.pos = createVector(random(10,400), random(10,400));
+    this.pos = createVector(random(10,windowWidth-10), random(10,windowHeight-10));
     this.dim = random(8,20);
     this.startAngle = random(1/6, 2);
     this.rotateAng = PI/4;
