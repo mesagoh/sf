@@ -5,9 +5,12 @@
   pinkPetal = color(255,240,245);
 */
 
-let flowers = [];
+let flowers = [];   // array of Flower objects
 let numFlowers;
 let theta = 0;
+
+let palettes = [];    // array of Palette objects
+let paletteNow;
 let paddlePopPallete;
 let colorfulKuehPallete;
 
@@ -15,19 +18,32 @@ let bgCol;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  initFlowers(windowWidth, windowHeight);
   initPalettes();
+  reset(windowWidth, windowHeight);
 }
 
 function draw() {
   //bgCol = mouseX/7;
   background(0);
+  checkDeath();
+  drawFlowers();
 
-  for (var f of flowers) {
-    f.render(sin(theta));
-  }  
   theta += 0.05;
   printSignature();
+}
+
+function checkDeath(i) {
+  for (let i=0; i<flowers.length; i++) {
+    if (flowers[i].countToDeath <= 0) {
+      flowers.splice(i, 1);
+    }
+  }
+}
+
+function drawFlowers() {
+  for (var f of flowers) {
+    f.render(sin(theta));
+  } 
 }
 
 function mouseClicked() {
@@ -40,7 +56,6 @@ function mouseClicked() {
 function initFlowers(w, h) {
   numFlowers = max(w, h) / min(w, h) * 10;
 
-  console.log(max(w, h), numFlowers);
   for (let i=0; i < numFlowers; i++) {
       flowers.push(new Flower());
   }
@@ -52,12 +67,26 @@ function initPalettes() {
   paddlePopPallete = {
     ovary: color(252,226,174),
     petal: [color(182,255,234), color(255,179,179), color(255,220,247)]
-  };
+  }
 
+  //pink, pastel yellow, pastel green
   colorfulKuehPallete = {
     ovary: color(248,87,181),
     petal: [color(247,129,188), color(253,255,220), color(197,236,190)]
-  };
+  }
+
+  palettes.push(new Palette(paddlePopPallete.ovary, paddlePopPallete.petal));
+  palettes.push(new Palette(colorfulKuehPallete.ovary, colorfulKuehPallete.petal));
+}
+
+function reset(w, h) {
+  initFlowers(w, h);
+  pickPalette();
+}
+
+function pickPalette() {
+  paletteNow = random(palettes);
+  console.log(paletteNow);
 }
 
 function printSignature() {
@@ -85,7 +114,7 @@ class Flower {
     this.rotateAng = PI/4;
     this.ovaryColor = 255;
     this.petalColor = 255;
-    this.isColored = false;
+    this.countToDeath = random(3, 10);
   }
 
   render(theta) {
@@ -119,9 +148,10 @@ class Flower {
 
   update(x, y) {
     if (this.flowerSelected(x, y)) {
-      this.ovaryColor = colorfulKuehPallete.ovary;
-      this.petalColor = random(colorfulKuehPallete.petal);
-      this.isColored = true;
+      this.ovaryColor = paletteNow.ovary;
+      this.petalColor = random(paletteNow.petal);
+      this.countToDeath -= 1;
+      this.dim += 2;
     }
   }
 
@@ -129,11 +159,13 @@ class Flower {
     var d = dist(this.pos.x, this.pos.y, x, y);
 
     // TODO: return if statement after done debugging
-    if (d < (this.dim/2)) {
-      return true;
-    }
-    return false;
+    return (d < (this.dim/2));
   }
+}
 
-
+class Palette {
+  constructor(o, p) {
+    this.ovary = o;
+    this.petal = p;
+  }
 }
