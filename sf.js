@@ -1,8 +1,6 @@
 /* Nice pastel color palette:
   https://www.rapidtables.com/web/color/white-color.html
 
-  lightYellowOvary = color(255,222,173);
-  pinkPetal = color(255,240,245);
 */
 
 let flowers = [];   // array of Flower objects
@@ -37,6 +35,9 @@ function checkDeath(i) {
     if (flowers[i].countToDeath <= 0) {
       flowers.splice(i, 1);
     }
+  }
+  if (flowers.length == 0) {
+    reset(windowWidth, windowHeight);
   }
 }
 
@@ -86,7 +87,6 @@ function reset(w, h) {
 
 function pickPalette() {
   paletteNow = random(palettes);
-  console.log(paletteNow);
 }
 
 function printSignature() {
@@ -158,7 +158,6 @@ class Flower {
   flowerSelected(x, y) {
     var d = dist(this.pos.x, this.pos.y, x, y);
 
-    // TODO: return if statement after done debugging
     return (d < (this.dim/2));
   }
 }
